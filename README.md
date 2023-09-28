@@ -1,6 +1,6 @@
 # Go JPEG Encode and Decode via TurboJPEG v3
 
-Simple JPEG Encoder and Decoder. API compatible with Go's original `image/jpeg` package. Use existing Go code but just change the imported JPEG package to this package.
+Simple JPEG Encoder and Decoder.
 
 Replace
 ```Go
