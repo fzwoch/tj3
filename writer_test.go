@@ -12,7 +12,7 @@ import (
 
 var r = image.Rectangle{
 	Min: image.Point{0, 0},
-	Max: image.Point{32, 240},
+	Max: image.Point{320, 240},
 }
 
 func TestEncodeNilOptions(t *testing.T) {
