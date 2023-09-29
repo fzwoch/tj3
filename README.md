@@ -4,7 +4,7 @@ Simple JPEG Encoder and Decoder.
 
 Replace
 ```Go
-import(
+import (
     "image/jpeg"
 )
 ```
@@ -12,7 +12,7 @@ import(
 with
 
 ```Go
-import(
+import (
     jpeg "github.com/fzwoch/tj3"
 )
 ```
@@ -20,7 +20,7 @@ import(
 or, if you only want the transparent decoding feature:
 
 ```Go
-import(
+import (
     "image"
     _ "image/jpeg"
 )
@@ -29,7 +29,7 @@ import(
 with
 
 ```Go
-import(
+import (
     "image"
     _ "github.com/fzwoch/tj3"
 )
