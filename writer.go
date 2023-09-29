@@ -26,16 +26,17 @@ func Encode(w io.Writer, m image.Image, o *Options) error {
 	}
 	defer C.tj3Destroy(ctx)
 
-	if o.Quality < 0 || o.Quality > 100 {
-		return errors.New("invalid quality option")
+	if o == nil {
+		o = &Options{
+			Quality: DefaultQuality,
+		}
 	}
-	q := o.Quality
-	if q == 0 {
-		q = DefaultQuality
+	if o.Quality <= 0 || o.Quality > 100 {
+		return errors.New("invalid quality option")
 	}
 
 	C.tj3Set(ctx, C.TJPARAM_NOREALLOC, 1)
-	C.tj3Set(ctx, C.TJPARAM_QUALITY, C.int(q))
+	C.tj3Set(ctx, C.TJPARAM_QUALITY, C.int(o.Quality))
 
 	var (
 		pin runtime.Pinner
