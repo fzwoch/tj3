@@ -7,6 +7,7 @@ package tj3
 import (
 	"bytes"
 	"encoding/base64"
+	"image/color"
 	"testing"
 )
 
@@ -28,41 +29,86 @@ func TestDecodeConfigTooShort(t *testing.T) {
 
 func TestDecodeConfigGray(t *testing.T) {
 	b, _ := base64.StdEncoding.DecodeString(gray)
-	_, err := DecodeConfig(bytes.NewReader(b))
+	cfg, err := DecodeConfig(bytes.NewReader(b))
 	if err != nil {
 		t.Fatal(err)
+	}
+	if cfg.ColorModel != color.GrayModel {
+		t.Fatal("unexpected color model")
+	}
+	if cfg.Width != 320 {
+		t.Fatal("unexpected width")
+	}
+	if cfg.Height != 240 {
+		t.Fatal("unexpected height")
 	}
 }
 
 func TestDecodeConfigRgb(t *testing.T) {
 	b, _ := base64.StdEncoding.DecodeString(rgb)
-	_, err := DecodeConfig(bytes.NewReader(b))
+	cfg, err := DecodeConfig(bytes.NewReader(b))
 	if err != nil {
 		t.Fatal(err)
+	}
+	if cfg.ColorModel != color.NRGBAModel {
+		t.Fatal("unexpected color model")
+	}
+	if cfg.Width != 320 {
+		t.Fatal("unexpected width")
+	}
+	if cfg.Height != 240 {
+		t.Fatal("unexpected height")
 	}
 }
 
 func TestDecodeConfigYuv420(t *testing.T) {
 	b, _ := base64.StdEncoding.DecodeString(yuv420)
-	_, err := DecodeConfig(bytes.NewReader(b))
+	cfg, err := DecodeConfig(bytes.NewReader(b))
 	if err != nil {
 		t.Fatal(err)
+	}
+	if cfg.ColorModel != color.YCbCrModel {
+		t.Fatal("unexpected color model")
+	}
+	if cfg.Width != 320 {
+		t.Fatal("unexpected width")
+	}
+	if cfg.Height != 240 {
+		t.Fatal("unexpected height")
 	}
 }
 
 func TestDecodeConfigYuv422(t *testing.T) {
 	b, _ := base64.StdEncoding.DecodeString(yuv422)
-	_, err := DecodeConfig(bytes.NewReader(b))
+	cfg, err := DecodeConfig(bytes.NewReader(b))
 	if err != nil {
 		t.Fatal(err)
+	}
+	if cfg.ColorModel != color.YCbCrModel {
+		t.Fatal("unexpected color model")
+	}
+	if cfg.Width != 320 {
+		t.Fatal("unexpected width")
+	}
+	if cfg.Height != 240 {
+		t.Fatal("unexpected height")
 	}
 }
 
 func TestDecodeConfigTyv444(t *testing.T) {
 	b, _ := base64.StdEncoding.DecodeString(yuv444)
-	_, err := DecodeConfig(bytes.NewReader(b))
+	cfg, err := DecodeConfig(bytes.NewReader(b))
 	if err != nil {
 		t.Fatal(err)
+	}
+	if cfg.ColorModel != color.YCbCrModel {
+		t.Fatal("unexpected color model")
+	}
+	if cfg.Width != 320 {
+		t.Fatal("unexpected width")
+	}
+	if cfg.Height != 240 {
+		t.Fatal("unexpected height")
 	}
 }
 
@@ -73,7 +119,12 @@ func TestDecodeGray(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_ = img
+	if img.Bounds().Dx() != 320 {
+		t.Fatal("unexpected width")
+	}
+	if img.Bounds().Dy() != 240 {
+		t.Fatal("unexpected height")
+	}
 }
 
 func TestDecodeRgb(t *testing.T) {
@@ -83,7 +134,12 @@ func TestDecodeRgb(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_ = img
+	if img.Bounds().Dx() != 320 {
+		t.Fatal("unexpected width")
+	}
+	if img.Bounds().Dy() != 240 {
+		t.Fatal("unexpected height")
+	}
 }
 
 func TestDecodeYuv420(t *testing.T) {
@@ -93,7 +149,12 @@ func TestDecodeYuv420(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_ = img
+	if img.Bounds().Dx() != 320 {
+		t.Fatal("unexpected width")
+	}
+	if img.Bounds().Dy() != 240 {
+		t.Fatal("unexpected height")
+	}
 }
 
 func TestDecodeYuv422(t *testing.T) {
@@ -103,7 +164,12 @@ func TestDecodeYuv422(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_ = img
+	if img.Bounds().Dx() != 320 {
+		t.Fatal("unexpected width")
+	}
+	if img.Bounds().Dy() != 240 {
+		t.Fatal("unexpected height")
+	}
 }
 
 func TestDecodeYuv444(t *testing.T) {
@@ -113,7 +179,12 @@ func TestDecodeYuv444(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_ = img
+	if img.Bounds().Dx() != 320 {
+		t.Fatal("unexpected width")
+	}
+	if img.Bounds().Dy() != 240 {
+		t.Fatal("unexpected height")
+	}
 }
 
 const gray = `

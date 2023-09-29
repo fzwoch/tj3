@@ -126,7 +126,7 @@ func DecodeConfig(r io.Reader) (image.Config, error) {
 		}, nil
 	case C.TJCS_RGB:
 		return image.Config{
-			ColorModel: color.RGBAModel,
+			ColorModel: color.NRGBAModel,
 			Width:      w,
 			Height:     h,
 		}, nil
