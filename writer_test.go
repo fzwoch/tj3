@@ -51,15 +51,6 @@ func TestEncodeGray(t *testing.T) {
 	}
 }
 
-func TestEncodeCMYK(t *testing.T) {
-	m := image.NewCMYK(r)
-	w := new(bytes.Buffer)
-	err := Encode(w, m, &Options{Quality: DefaultQuality})
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
 func TestEncodeRGB(t *testing.T) {
 	m := image.NewNRGBA(r)
 	w := new(bytes.Buffer)
@@ -69,7 +60,7 @@ func TestEncodeRGB(t *testing.T) {
 	}
 }
 
-func TestEncodeYuv420(t *testing.T) {
+func TestEncodeYUV420(t *testing.T) {
 	m := image.NewYCbCr(r, image.YCbCrSubsampleRatio420)
 	w := new(bytes.Buffer)
 	err := Encode(w, m, &Options{Quality: DefaultQuality})
@@ -78,7 +69,7 @@ func TestEncodeYuv420(t *testing.T) {
 	}
 }
 
-func TestEncodeYuv422(t *testing.T) {
+func TestEncodeYUV422(t *testing.T) {
 	m := image.NewYCbCr(r, image.YCbCrSubsampleRatio422)
 	w := new(bytes.Buffer)
 	err := Encode(w, m, &Options{Quality: DefaultQuality})
@@ -87,8 +78,17 @@ func TestEncodeYuv422(t *testing.T) {
 	}
 }
 
-func TestEncodeYuv444(t *testing.T) {
+func TestEncodeYUV444(t *testing.T) {
 	m := image.NewYCbCr(r, image.YCbCrSubsampleRatio444)
+	w := new(bytes.Buffer)
+	err := Encode(w, m, &Options{Quality: DefaultQuality})
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestEncodeCMYK(t *testing.T) {
+	m := image.NewCMYK(r)
 	w := new(bytes.Buffer)
 	err := Encode(w, m, &Options{Quality: DefaultQuality})
 	if err != nil {
