@@ -205,7 +205,7 @@ func TestDecodeYUV444(t *testing.T) {
 }
 
 func TestDecodeCMYK(t *testing.T) {
-	b, _ := base64.StdEncoding.DecodeString(yuv444)
+	b, _ := base64.StdEncoding.DecodeString(cmyk)
 
 	img, err := Decode(bytes.NewReader(b))
 	if err != nil {
