@@ -13,12 +13,17 @@ import (
 	"runtime"
 )
 
+// DefaultQuality is the default quality encoding parameter.
 const DefaultQuality = 75
 
+// Options are the encoding parameters.
+// Quality ranges from 1 to 100 inclusive, higher is better.
 type Options struct {
 	Quality int
 }
 
+// Encode writes the Image m to w with the given options.
+// Default parameters are used if a nil *[Options] is passed.
 func Encode(w io.Writer, m image.Image, o *Options) error {
 	ctx := C.tj3Init(C.TJINIT_COMPRESS)
 	if ctx == nil {

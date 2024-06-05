@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package tj3 provides a simple JPEG reader and writer wrapper for the
+// Package tj3 provides a simple JPEG decoder and encoder wrapper for the
 // TurboJPEG v3 API and library.
 package tj3
 
@@ -15,6 +15,7 @@ import (
 	"io"
 )
 
+// Decode reads a JPEG image from r and returns it as an [image.Image].
 func Decode(r io.Reader) (image.Image, error) {
 	ctx := C.tj3Init(C.TJINIT_DECOMPRESS)
 	if ctx == nil {
@@ -86,6 +87,8 @@ func Decode(r io.Reader) (image.Image, error) {
 	return nil, errors.New("")
 }
 
+// DecodeConfig returns the color model and dimensions of a JPEG image without
+// decoding the entire image.
 func DecodeConfig(r io.Reader) (image.Config, error) {
 	ctx := C.tj3Init(C.TJINIT_DECOMPRESS)
 	if ctx == nil {
