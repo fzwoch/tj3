@@ -4,8 +4,6 @@
 
 package tj3
 
-// #cgo LDFLAGS: -l turbojpeg
-//
 // #include <turbojpeg.h>
 import "C"
 import (
