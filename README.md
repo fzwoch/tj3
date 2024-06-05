@@ -43,3 +43,9 @@ At build time of your application you will need to tell the Go compiler where to
 export CGO_CFLAGS="-I /path/to/libjpeg-turbo/header-files"
 export CGO_LDFLAGS="-L /path/to/libjpeg-turbo/library"
 ```
+
+For example, if your system has `pkg-config` here is how to run tests.
+
+```shell
+CGO_CFLAGS=`pkg-config --cflags libturbojpeg` CGO_LDFLAGS=`pkg-config --libs libturbojpeg` go test -v
+```
