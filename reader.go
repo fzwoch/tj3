@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Package tj3 provides a simple JPEG reader and writer wrapper for the
+// TurboJPEG v3 API and library.
 package tj3
 
 // #include <turbojpeg.h>
