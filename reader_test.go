@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"image/color"
+	"image/jpeg"
 	"testing"
 )
 
@@ -216,6 +217,20 @@ func TestDecodeCMYK(t *testing.T) {
 	}
 	if img.Bounds().Dy() != 240 {
 		t.Fatal("unexpected height")
+	}
+}
+
+func BenchmarkDecodeYUV420_TurboJPEG(b *testing.B) {
+	r, _ := base64.StdEncoding.DecodeString(yuv420)
+	for i := 0; i < b.N; i++ {
+		Decode(bytes.NewReader(r))
+	}
+}
+
+func BenchmarkDecodeYUV420_GoJPEG(b *testing.B) {
+	r, _ := base64.StdEncoding.DecodeString(yuv420)
+	for i := 0; i < b.N; i++ {
+		jpeg.Decode(bytes.NewReader(r))
 	}
 }
 

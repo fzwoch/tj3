@@ -7,6 +7,7 @@ package tj3
 import (
 	"bytes"
 	"image"
+	"image/jpeg"
 	"testing"
 )
 
@@ -93,5 +94,21 @@ func TestEncodeCMYK(t *testing.T) {
 	err := Encode(w, m, &Options{Quality: DefaultQuality})
 	if err != nil {
 		t.Fatal(err)
+	}
+}
+
+func BenchmarkEncodeYUV420_TurboJPEG(b *testing.B) {
+	m := image.NewYCbCr(r, image.YCbCrSubsampleRatio420)
+	w := new(bytes.Buffer)
+	for i := 0; i < b.N; i++ {
+		Encode(w, m, &Options{Quality: DefaultQuality})
+	}
+}
+
+func BenchmarkEncodeYUV420_GoJPEG(b *testing.B) {
+	m := image.NewYCbCr(r, image.YCbCrSubsampleRatio420)
+	w := new(bytes.Buffer)
+	for i := 0; i < b.N; i++ {
+		jpeg.Encode(w, m, &jpeg.Options{Quality: jpeg.DefaultQuality})
 	}
 }
