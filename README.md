@@ -53,6 +53,7 @@ CGO_CFLAGS=`pkg-config --cflags libturbojpeg` CGO_LDFLAGS=`pkg-config --libs lib
 ## Benchmark
 
 ```
+cpu: AMD Ryzen 7 5700X 8-Core Processor
 BenchmarkDecodeYUV420_TurboJPEG-16    	    9301	    148467 ns/op
 BenchmarkDecodeYUV420_GoJPEG-16       	    1293	    818696 ns/op
 BenchmarkEncodeYUV420_TurboJPEG-16    	    7362	    155416 ns/op
