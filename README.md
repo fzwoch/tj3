@@ -3,20 +3,20 @@
 Simple JPEG Encoder and Decoder. Can often be used instead of Go's JPEG encoder and decoder:
 
 ```diff
-import (
+ import (
 -    "image/jpeg"
 +    jpeg "github.com/fzwoch/tj3"
-)
+ )
 ```
 
 or, if you only want the transparent decoding feature:
 
 ```diff
-import (
+ import (
      "image"
 -    _ "image/jpeg"
 +    _ "github.com/fzwoch/tj3"
-)
+ )
 ```
 
 ## Cgo
