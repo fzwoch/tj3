@@ -12,23 +12,25 @@ import (
 	"testing"
 )
 
-//go:embed testdata/gray.jpg
-var gray []byte
+var (
+	//go:embed testdata/gray.jpg
+	gray []byte
 
-//go:embed testdata/rgb.jpg
-var rgb []byte
+	//go:embed testdata/rgb.jpg
+	rgb []byte
 
-//go:embed testdata/yuv420.jpg
-var yuv420 []byte
+	//go:embed testdata/yuv420.jpg
+	yuv420 []byte
 
-//go:embed testdata/yuv422.jpg
-var yuv422 []byte
+	//go:embed testdata/yuv422.jpg
+	yuv422 []byte
 
-//go:embed testdata/yuv444.jpg
-var yuv444 []byte
+	//go:embed testdata/yuv444.jpg
+	yuv444 []byte
 
-//go:embed testdata/cmyk.jpg
-var cmyk []byte
+	//go:embed testdata/cmyk.jpg
+	cmyk []byte
+)
 
 func TestDecodeConfigSmallerThanBuffer(t *testing.T) {
 	_, err := DecodeConfig(bytes.NewReader(gray[:1024]))
@@ -40,7 +42,7 @@ func TestDecodeConfigSmallerThanBuffer(t *testing.T) {
 func TestDecodeConfigTooShort(t *testing.T) {
 	_, err := DecodeConfig(bytes.NewReader(gray[:128]))
 	if err == nil {
-		t.Fatal(err)
+		t.Fatal("expected error")
 	}
 }
 
@@ -215,6 +217,13 @@ func TestDecodeCMYK(t *testing.T) {
 	}
 	if img.Bounds().Dy() != 240 {
 		t.Fatal("unexpected height")
+	}
+}
+
+func TestDecodeInvalidData(t *testing.T) {
+	_, err := Decode(bytes.NewReader(yuv420[1024:]))
+	if err == nil {
+		t.Fatal("expected error")
 	}
 }
 

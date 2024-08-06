@@ -97,6 +97,15 @@ func TestEncodeCMYK(t *testing.T) {
 	}
 }
 
+func TestEncodeInvalidFormat(t *testing.T) {
+	m := image.NewAlpha(r)
+	w := new(bytes.Buffer)
+	err := Encode(w, m, &Options{Quality: DefaultQuality})
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
 func BenchmarkEncodeYUV420_TurboJPEG(b *testing.B) {
 	m := image.NewYCbCr(r, image.YCbCrSubsampleRatio420)
 	w := new(bytes.Buffer)
