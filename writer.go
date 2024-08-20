@@ -43,16 +43,13 @@ func Encode(w io.Writer, m image.Image, o *Options) error {
 	C.tj3Set(ctx, C.TJPARAM_NOREALLOC, 1)
 	C.tj3Set(ctx, C.TJPARAM_QUALITY, C.int(o.Quality))
 
-	var (
-		pin runtime.Pinner
-		s   C.size_t
-	)
+	var pin runtime.Pinner
 
 	switch m := m.(type) {
 	case *image.Gray:
 		C.tj3Set(ctx, C.TJPARAM_SUBSAMP, C.TJSAMP_GRAY)
 
-		s = C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_GRAY)
+		s := C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_GRAY)
 
 		b := make([]byte, int(s))
 		t := (*C.uchar)(&b[0])
@@ -71,7 +68,7 @@ func Encode(w io.Writer, m image.Image, o *Options) error {
 	case *image.CMYK:
 		C.tj3Set(ctx, C.TJPARAM_SUBSAMP, C.TJSAMP_444)
 
-		s = C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_444)
+		s := C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_444)
 
 		b := make([]byte, int(s))
 		t := (*C.uchar)(&b[0])
@@ -90,7 +87,7 @@ func Encode(w io.Writer, m image.Image, o *Options) error {
 	case *image.NRGBA:
 		C.tj3Set(ctx, C.TJPARAM_SUBSAMP, C.TJSAMP_444)
 
-		s = C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_444)
+		s := C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_444)
 
 		b := make([]byte, int(s))
 		t := (*C.uchar)(&b[0])
@@ -120,7 +117,7 @@ func Encode(w io.Writer, m image.Image, o *Options) error {
 
 		C.tj3Set(ctx, C.TJPARAM_SUBSAMP, ss)
 
-		s = C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), ss)
+		s := C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), ss)
 
 		b := make([]byte, int(s))
 		t := (*C.uchar)(&b[0])
