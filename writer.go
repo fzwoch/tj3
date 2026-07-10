@@ -25,7 +25,7 @@ type Options struct {
 // Encode writes the Image m to w with the given options.
 // Default parameters are used if a nil *[Options] is passed.
 func Encode(w io.Writer, m image.Image, o *Options) error {
-	ctx := C.tj3Init(C.TJINIT_COMPRESS)
+	ctx := C.tj3InitVersion(C.TJINIT_COMPRESS, C.TURBOJPEG_VERSION_NUMBER)
 	if ctx == nil {
 		return errors.New("tj3Init() failed")
 	}

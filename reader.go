@@ -13,11 +13,12 @@ import (
 	"image"
 	"image/color"
 	"io"
+	"runtime"
 )
 
 // Decode reads a JPEG image from r and returns it as an [image.Image].
 func Decode(r io.Reader) (image.Image, error) {
-	ctx := C.tj3Init(C.TJINIT_DECOMPRESS)
+	ctx := C.tj3InitVersion(C.TJINIT_DECOMPRESS, C.TURBOJPEG_VERSION_NUMBER)
 	if ctx == nil {
 		return nil, errors.New("tj3Init() failed")
 	}
@@ -107,7 +108,7 @@ func Decode(r io.Reader) (image.Image, error) {
 // DecodeConfig returns the color model and dimensions of a JPEG image without
 // decoding the entire image.
 func DecodeConfig(r io.Reader) (image.Config, error) {
-	ctx := C.tj3Init(C.TJINIT_DECOMPRESS)
+	ctx := C.tj3InitVersion(C.TJINIT_DECOMPRESS, C.TURBOJPEG_VERSION_NUMBER)
 	if ctx == nil {
 		return image.Config{}, errors.New("tj3Init() failed")
 	}
