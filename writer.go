@@ -47,62 +47,13 @@ func Encode(w io.Writer, m image.Image, o *Options) error {
 
 	switch m := m.(type) {
 	case *image.Gray:
-		C.tj3Set(ctx, C.TJPARAM_SUBSAMP, C.TJSAMP_GRAY)
-
-		s := C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_GRAY)
-
-		b := make([]byte, int(s))
-		t := (*C.uchar)(&b[0])
-
-		pin.Pin(t)
-		ret := C.tj3Compress8(ctx, (*C.uchar)(&m.Pix[0]), C.int(m.Rect.Dx()), C.int(m.Stride), C.int(m.Rect.Dy()), C.TJPF_GRAY, &t, &s)
-		pin.Unpin()
-		if ret != 0 {
-			return errors.New(C.GoString(C.tj3GetErrorStr(ctx)))
-		}
-		_, err := w.Write(b[:s])
-		if err != nil {
-			return err
-		}
-		return nil
+		return tj3CompressPacked(w, ctx, m.Pix, m.Stride, m.Rect, C.TJSAMP_GRAY, C.TJPF_GRAY)
 	case *image.CMYK:
-		C.tj3Set(ctx, C.TJPARAM_SUBSAMP, C.TJSAMP_444)
-
-		s := C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_444)
-
-		b := make([]byte, int(s))
-		t := (*C.uchar)(&b[0])
-
-		pin.Pin(t)
-		ret := C.tj3Compress8(ctx, (*C.uchar)(&m.Pix[0]), C.int(m.Rect.Dx()), C.int(m.Stride), C.int(m.Rect.Dy()), C.TJPF_CMYK, &t, &s)
-		pin.Unpin()
-		if ret != 0 {
-			return errors.New(C.GoString(C.tj3GetErrorStr(ctx)))
-		}
-		_, err := w.Write(b[:s])
-		if err != nil {
-			return err
-		}
-		return nil
+		return tj3CompressPacked(w, ctx, m.Pix, m.Stride, m.Rect, C.TJSAMP_444, C.TJPF_CMYK)
 	case *image.NRGBA:
-		C.tj3Set(ctx, C.TJPARAM_SUBSAMP, C.TJSAMP_444)
-
-		s := C.tj3JPEGBufSize(C.int(m.Rect.Dx()), C.int(m.Rect.Dy()), C.TJSAMP_444)
-
-		b := make([]byte, int(s))
-		t := (*C.uchar)(&b[0])
-
-		pin.Pin(t)
-		ret := C.tj3Compress8(ctx, (*C.uchar)(&m.Pix[0]), C.int(m.Rect.Dx()), C.int(m.Stride), C.int(m.Rect.Dy()), C.TJPF_RGBA, &t, &s)
-		pin.Unpin()
-		if ret != 0 {
-			return errors.New(C.GoString(C.tj3GetErrorStr(ctx)))
-		}
-		_, err := w.Write(b[:s])
-		if err != nil {
-			return err
-		}
-		return nil
+		return tj3CompressPacked(w, ctx, m.Pix, m.Stride, m.Rect, C.TJSAMP_444, C.TJPF_RGBA)
+	case *image.RGBA:
+		return tj3CompressPacked(w, ctx, m.Pix, m.Stride, m.Rect, C.TJSAMP_444, C.TJPF_RGBA)
 	case *image.YCbCr:
 		var ss C.int
 
@@ -149,5 +100,27 @@ func Encode(w io.Writer, m image.Image, o *Options) error {
 		return nil
 	}
 
-	return errors.New("")
+	return errors.New("unsupported image type")
+}
+
+func tj3CompressPacked(w io.Writer, ctx C.tjhandle, pix []uint8, stride int, rect image.Rectangle, subsamp, pf C.int) error {
+	C.tj3Set(ctx, C.TJPARAM_SUBSAMP, subsamp)
+
+	s := C.tj3JPEGBufSize(C.int(rect.Dx()), C.int(rect.Dy()), subsamp)
+
+	b := make([]byte, int(s))
+	t := (*C.uchar)(&b[0])
+
+	var pin runtime.Pinner
+	pin.Pin(t)
+	ret := C.tj3Compress8(ctx, (*C.uchar)(&pix[0]), C.int(rect.Dx()), C.int(stride), C.int(rect.Dy()), pf, &t, &s)
+	pin.Unpin()
+	if ret != 0 {
+		return errors.New(C.GoString(C.tj3GetErrorStr(ctx)))
+	}
+	_, err := w.Write(b[:s])
+	if err != nil {
+		return err
+	}
+	return nil
 }

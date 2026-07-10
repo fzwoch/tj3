@@ -61,6 +61,15 @@ func TestEncodeRGB(t *testing.T) {
 	}
 }
 
+func TestEncodeRGBA(t *testing.T) {
+	m := image.NewRGBA(r)
+	w := new(bytes.Buffer)
+	err := Encode(w, m, &Options{Quality: DefaultQuality})
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestEncodeYUV420(t *testing.T) {
 	m := image.NewYCbCr(r, image.YCbCrSubsampleRatio420)
 	w := new(bytes.Buffer)
