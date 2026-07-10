@@ -77,7 +77,24 @@ func Decode(r io.Reader) (image.Image, error) {
 			ss = image.YCbCrSubsampleRatio444
 		}
 		img := image.NewYCbCr(bounds, ss)
-		ret = C.tj3DecompressToYUV8(ctx, (*C.uchar)(&b[0]), C.size_t(len(b)), (*C.uchar)(&img.Y[0]), 1)
+
+		planes := []*C.uchar{
+			(*C.uchar)(&img.Y[0]),
+			(*C.uchar)(&img.Cb[0]),
+			(*C.uchar)(&img.Cr[0]),
+		}
+		strides := []C.int{
+			C.int(img.YStride),
+			C.int(img.CStride),
+			C.int(img.CStride),
+		}
+
+		var pin runtime.Pinner
+		pin.Pin(planes[0])
+		pin.Pin(planes[1])
+		pin.Pin(planes[2])
+		ret = C.tj3DecompressToYUVPlanes8(ctx, (*C.uchar)(&b[0]), C.size_t(len(b)), &planes[0], &strides[0])
+		pin.Unpin()
 		if ret != 0 {
 			return nil, errors.New(C.GoString(C.tj3GetErrorStr(ctx)))
 		}
