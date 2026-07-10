@@ -61,7 +61,7 @@ func Decode(r io.Reader) (image.Image, error) {
 		}
 		return img, nil
 	case C.TJCS_RGB:
-		img := image.NewNRGBA(bounds)
+		img := image.NewRGBA(bounds)
 		ret = C.tj3Decompress8(ctx, (*C.uchar)(&b[0]), C.size_t(len(b)), (*C.uchar)(&img.Pix[0]), 0, C.TJPF_RGBA)
 		if ret != 0 {
 			return nil, errors.New(C.GoString(C.tj3GetErrorStr(ctx)))
@@ -147,7 +147,7 @@ func DecodeConfig(r io.Reader) (image.Config, error) {
 		}, nil
 	case C.TJCS_RGB:
 		return image.Config{
-			ColorModel: color.NRGBAModel,
+			ColorModel: color.RGBAModel,
 			Width:      w,
 			Height:     h,
 		}, nil

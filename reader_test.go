@@ -67,7 +67,7 @@ func TestDecodeConfigRGB(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if cfg.ColorModel != color.NRGBAModel {
+	if cfg.ColorModel != color.RGBAModel {
 		t.Fatal("unexpected color model")
 	}
 	if cfg.Width != 320 {
