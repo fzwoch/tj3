@@ -4,7 +4,13 @@
 
 package tj3
 
-// #include <turbojpeg.h>
+/*
+#include <turbojpeg.h>
+
+static tjhandle tj3_init_compress(void) {
+	return tj3Init(TJINIT_COMPRESS);
+}
+*/
 import "C"
 import (
 	"errors"
@@ -25,7 +31,7 @@ type Options struct {
 // Encode writes the Image m to w with the given options.
 // Default parameters are used if a nil *[Options] is passed.
 func Encode(w io.Writer, m image.Image, o *Options) error {
-	ctx := C.tj3InitVersion(C.TJINIT_COMPRESS, C.TURBOJPEG_VERSION_NUMBER)
+	ctx := C.tj3_init_compress()
 	if ctx == nil {
 		return errors.New("tj3Init() failed")
 	}

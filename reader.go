@@ -6,7 +6,13 @@
 // TurboJPEG v3 API and library.
 package tj3
 
-// #include <turbojpeg.h>
+/*
+#include <turbojpeg.h>
+
+static tjhandle tj3_init_decompress(void) {
+	return tj3Init(TJINIT_DECOMPRESS);
+}
+*/
 import "C"
 import (
 	"errors"
@@ -18,7 +24,7 @@ import (
 
 // Decode reads a JPEG image from r and returns it as an [image.Image].
 func Decode(r io.Reader) (image.Image, error) {
-	ctx := C.tj3InitVersion(C.TJINIT_DECOMPRESS, C.TURBOJPEG_VERSION_NUMBER)
+	ctx := C.tj3_init_decompress()
 	if ctx == nil {
 		return nil, errors.New("tj3Init() failed")
 	}
@@ -108,7 +114,7 @@ func Decode(r io.Reader) (image.Image, error) {
 // DecodeConfig returns the color model and dimensions of a JPEG image without
 // decoding the entire image.
 func DecodeConfig(r io.Reader) (image.Config, error) {
-	ctx := C.tj3InitVersion(C.TJINIT_DECOMPRESS, C.TURBOJPEG_VERSION_NUMBER)
+	ctx := C.tj3_init_decompress()
 	if ctx == nil {
 		return image.Config{}, errors.New("tj3Init() failed")
 	}
